@@ -2,17 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
 
-class OpenQuestion extends StatelessWidget {
-  OpenQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
+class SingleChoiceQuestion extends StatefulWidget {
+  const SingleChoiceQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
 
   final int index;
   final SurveyDetail surveyDetail;
   final PageController controller;
 
   @override
+  _SingleChoiceQuestionState createState() => _SingleChoiceQuestionState();
+}
+
+class _SingleChoiceQuestionState extends State<SingleChoiceQuestion> {
+  Question question;
+  String _selected = "";
+//  List<String> alternatives = new List();
+
+  @override
   Widget build(BuildContext context) {
-    Question question;
-    question = surveyDetail.questions[index];
+    question = widget.surveyDetail.questions[widget.index];
+    //question.answers.map((a) => alternatives.add(a.value));
+
+    List<Widget> createRows() {
+      List<Widget> allRows = new List();
+
+      for (int i = 0; i < question.answers.length; i++) {
+        Widget w = RadioListTile<String>(
+          title: Text(question.answers[i].answerText),
+          value: question.answers[i].answerText,
+          groupValue: _selected,
+          onChanged: (String value) {
+            setState(() {
+              _selected = value;
+            });
+          },
+        );
+        allRows.add(w);
+      }
+
+      return allRows;
+    }
 
     return Padding(
         padding: EdgeInsets.all(16.0),
@@ -56,22 +85,7 @@ class OpenQuestion extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.all(10),
                       child: Column(
-                        children: <Widget>[
-                          //Text(question.answers[0].toString())
-//                          TextFormField(
-//                            decoration: InputDecoration(
-//                                labelText: 'Enter your answer'
-//                            ),
-//                          ),
-                        TextField(
-                          keyboardType: TextInputType.multiline,
-                          minLines: 5,
-                          maxLines: 20,
-                          decoration: InputDecoration(
-                                labelText: 'Enter your answer'
-                            ),
-                        ),
-                        ],
+                        children: createRows(),
                       )
                   ),
                 ],
@@ -80,38 +94,5 @@ class OpenQuestion extends StatelessWidget {
           ],
         )
     );
-    /*return Container(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            
-              Row(
-                children: <Widget>[
-                  Card(
-                    child: Text(
-                      surveyDetail.questions[index].questionText,
-                      style: TextStyle(fontSize: 24),),
-                  ),
-                ]
-              ),
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[TextFormField(
-                  decoration: InputDecoration(
-                      labelText: 'Enter your answer'
-                  ),
-                ),
-              ]),
-            ),
-            FlatButton.icon(
-                onPressed: null,
-                icon: Icon(Icons.navigate_next, size: 40.0,),
-                label: Text('Proceed', style: TextStyle(fontSize: 24),)
-            ),
-          ]
-      ),
-    );*/
   }
 }

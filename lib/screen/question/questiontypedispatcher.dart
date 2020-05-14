@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/questiontype.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
+import 'package:xplatsurveydemo/screen/question/multiplechoicequestionscreen.dart';
+import 'package:xplatsurveydemo/screen/question/numberquestionscreen.dart';
 import 'package:xplatsurveydemo/screen/question/openquestionscreen.dart';
+import 'package:xplatsurveydemo/screen/question/singlechoicequestionscreen.dart';
+import 'package:xplatsurveydemo/screen/question/yesnoquestionscreen.dart';
 
 enum RadioOptions { Option1, Option2, Option3 }
 
@@ -18,9 +22,10 @@ Widget generateAnswerByType({@required SurveyDetail surveyDetail, @required int 
       break;
 
     case QuestionType.SINGLE_CHOICE:
-      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
+      result = SingleChoiceQuestion(surveyDetail: surveyDetail, index: index, controller: controller);
+//      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
 
-      result = Column(
+      /*result = Column(
         children: <Widget>[
           Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),),
           RadioListTile<RadioOptions>(
@@ -44,16 +49,19 @@ Widget generateAnswerByType({@required SurveyDetail surveyDetail, @required int 
               label: Text(surveyDetail.questions.length == index +1 ? 'Proceed' : 'Complete', style: TextStyle(fontSize: 24),)
           ),
         ],
-      );
+      );*/
       break;
     case QuestionType.MULTIPLE_CHOICE:
-      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
+      result = MultipleChoiceQuestion(surveyDetail: surveyDetail, index: index, controller: controller);
+//      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
       break;
     case QuestionType.YES_NO:
-      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
+//      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
+        result = YesNoQuestion(surveyDetail: surveyDetail, index: index, controller: controller);
       break;
     case QuestionType.NUMBER:
-      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
+      result = NumberQuestion(surveyDetail: surveyDetail, index: index, controller: controller);
+//      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
       break;
     case QuestionType.RATING:
       result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
