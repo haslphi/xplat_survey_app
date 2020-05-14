@@ -1,0 +1,8 @@
+enum QuestionType {
+  OPEN,
+  SINGLE_CHOICE,
+  MULTIPLE_CHOICE,
+  YES_NO,
+  NUMBER,
+  RATING
+}
