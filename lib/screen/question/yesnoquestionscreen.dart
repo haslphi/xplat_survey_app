@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
-import 'package:xplatsurveydemo/screen/question/questiontypedispatcher.dart';
 
 class YesNoQuestion extends StatefulWidget {
   const YesNoQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
