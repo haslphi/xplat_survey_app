@@ -24,7 +24,7 @@ class SurveyOverviewTile extends StatelessWidget {
       //padding: EdgeInsets.all(0.0),
       //padding: EdgeInsets.only(bottom: 12),
       padding: EdgeInsets.only(left: 12, top: 16, right: 12, bottom: 0),
-      onPressed: () => openSurveyDetailsPage(context, survey.id, survey.title, colorMap[index % colorMap.length]),
+      onPressed: () => openSurveyDetailsPage(context, survey.id, survey.title, colorMap[survey.id % colorMap.length]),
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -45,7 +45,7 @@ class SurveyOverviewTile extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 2,
-                child: Center(child: SurveyOverviewIcon(id: survey.id, backgroundColor: colorMap[index % colorMap.length],)),
+                child: Center(child: SurveyOverviewIcon(id: survey.id, backgroundColor: colorMap[survey.id % colorMap.length],)),
               ),
               Expanded(
                 flex: 5,

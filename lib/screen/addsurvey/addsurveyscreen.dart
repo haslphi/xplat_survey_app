@@ -17,7 +17,7 @@ class AddSurveyScreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: <Widget>[
-            Text(pt_createSurvey),
+            Text(PT_CREATE_SURVEY),
           ],
         ),
       ),

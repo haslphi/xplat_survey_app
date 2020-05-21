@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/screen/addsurvey/addsurveyscreen.dart';
-import 'package:xplatsurveydemo/screen/newsurveysoverview/newsurveyoverview.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/components/surveydetailpageview.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/surveydetailscreen.dart';
 import 'package:xplatsurveydemo/screen/surveyoverview/surveyoverviewscreen.dart';
+import 'package:xplatsurveydemo/service/const.dart';
+import 'package:xplatsurveydemo/service/persistence.dart';
 
 void openAppBarPage(BuildContext context, String surveyJson) {
   Navigator.push(context, MaterialPageRoute(
@@ -40,10 +41,14 @@ void openSurveyOverview(BuildContext context) {
   ));
 }
 
-void openNewSurveysOverview(BuildContext context) {
+void openNewSurveysOverview(BuildContext context, String iconTag) {
   Navigator.push(context, MaterialPageRoute(
     builder: (BuildContext context) {
-      return NewSurveyOverviewScreen();
+      return SurveyOverviewScreen(
+        filter: (survey) => (!Persistence.getStringList(SURVEYS_SEEN).contains(survey.id.toString())),
+        iconData: Icons.add_alert,
+        iconTag: iconTag,
+      );
     },
   ));
 }

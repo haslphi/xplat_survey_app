@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/screen/home/components/hometile.dart';
 import 'package:xplatsurveydemo/service/const.dart';
 import 'package:xplatsurveydemo/service/navigation.dart';
+import 'package:xplatsurveydemo/service/persistence.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -26,25 +27,31 @@ class HomeScreen extends StatelessWidget {
             HomeTile(
               icon: Icons.add_alert,
               iconTag: newSurveyOverviewIconTag,
-              tileTitle: pt_newSurveys,
-              onPressed: () => openNewSurveysOverview(context),
+              tileTitle: PT_NEW_SURVEY,
+              onPressed: () => openNewSurveysOverview(context, newSurveyOverviewIconTag),
             ),
             HomeTile(
               icon: Icons.list,
               iconTag: surveyOverviewIconTag,
-              tileTitle: pt_surveyList,
+              tileTitle: PT_SURVEY_LIST,
               onPressed: () => openSurveyOverview(context),
             ),
             HomeTile(
               icon: Icons.play_circle_outline,
               iconTag: resumeSurveyIconTag,
-              tileTitle: pt_resumeSurvey,
+              tileTitle: PT_RESUME_SURVEY,
             ),
             HomeTile(
               icon: Icons.add_circle_outline,
               iconTag: addSurveyIconTag,
-              tileTitle: pt_createSurvey,
+              tileTitle: PT_CREATE_SURVEY,
               onPressed: () => openAddSurvey(context),
+            ),
+            HomeTile(
+              icon: Icons.developer_mode,
+              tileTitle: 'Reset Prefs',
+              iconTag: 'devmode',
+              onPressed: () => Persistence.clear(),
             ),
           ],
         ),

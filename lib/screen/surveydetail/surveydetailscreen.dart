@@ -4,6 +4,7 @@ import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/components/surveydetaildescription.dart';
 import 'package:xplatsurveydemo/screen/surveyoverview/components/surveyoverviewicon.dart';
 import 'package:xplatsurveydemo/service/navigation.dart';
+import 'package:xplatsurveydemo/service/persistence.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 final SnackBar snackBar =
@@ -57,16 +58,8 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                 builder: (context, surveySnap) {
                   if (surveySnap.hasData) {
                     surveyDetail = surveySnap.data;
+                    Persistence.addSurveySeen(surveyDetail.id);
                     return SurveyDetailDescription(surveyDetail: surveyDetail, backgroundColor: widget.backgroundColor,);
-                    /*return Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Text(
-                          surveyDetail.description,
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                    );*/
                   } else if (surveySnap.hasError) {
                     return Text("${surveySnap.error}");
                   }

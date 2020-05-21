@@ -6,9 +6,15 @@ import 'package:xplatsurveydemo/service/const.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 final SnackBar snackBar = const SnackBar(content: Text('This is a list of all available surveys'));
+bool _defaultFilter(Survey survey) => true;
 
 class SurveyOverviewScreen extends StatefulWidget {
-  SurveyOverviewScreen({Key key}) : super(key: key);
+  // default values target "All Survey" list
+  SurveyOverviewScreen({Key key, this.filter = _defaultFilter, this.iconData = Icons.list, this.iconTag = surveyOverviewIconTag}) : super(key: key);
+
+  final bool Function(Survey) filter;
+  final IconData iconData;
+  final String iconTag;
 
   @override
   _SurveyOverviewScreenState createState() => _SurveyOverviewScreenState();
@@ -30,7 +36,15 @@ class _SurveyOverviewScreenState extends State<SurveyOverviewScreen> {
       appBar: AppBar(
         title: Row(
           children: <Widget>[
-            const Text(pt_surveyList),
+            Hero(
+              tag: widget.iconTag,
+              child: Icon(
+                widget.iconData,
+              ),
+            ),
+            Spacer(),
+            const Text(PT_SURVEY_LIST),
+            Spacer(flex: 5,),
           ],
         ),
         actions: <Widget>[
@@ -48,12 +62,12 @@ class _SurveyOverviewScreenState extends State<SurveyOverviewScreen> {
               future: futureSurveys,
               builder: (context, surveySnap) {
                 if (surveySnap.hasData) {
-                  //return Text(snapshot.data.title);
+                  List<Survey> surveys = (surveySnap.data as List<Survey>).where((element) => widget.filter(element)).toList();
                   return ListView.builder(
                     itemExtent: 125,
-                    itemCount: surveySnap.data.length,
+                    itemCount: surveys.length,
                     itemBuilder: (context, index) {
-                      Survey survey = surveySnap.data[index];
+                      Survey survey = surveys[index];
                       return SurveyOverviewTile(survey: survey, index: index);
                     },
                   );

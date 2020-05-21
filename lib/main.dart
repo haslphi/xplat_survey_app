@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/screen/home/homescreen.dart';
+import 'package:xplatsurveydemo/service/persistence.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,6 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // init Persistence Singleton
+    Persistence.init();
+
     return MaterialApp(
       title: _title,
       home: HomeScreen(),
