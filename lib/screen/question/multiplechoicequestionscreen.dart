@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:xplatsurveydemo/model/answer.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
+import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
+import 'package:xplatsurveydemo/screen/question/components/nextButton.dart';
+import 'package:xplatsurveydemo/screen/question/components/submitButton.dart';
+import 'package:xplatsurveydemo/service/navigation.dart';
 
 class MultipleChoiceQuestion extends StatefulWidget {
   const MultipleChoiceQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
@@ -15,13 +20,10 @@ class MultipleChoiceQuestion extends StatefulWidget {
 
 class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
   Question question;
-  String _multiSelected = "";
-  bool _isSelected = false;
 
   @override
   Widget build(BuildContext context) {
     question = widget.surveyDetail.questions[widget.index];
-    //question.answers.map((a) => alternatives.add(a.value));
 
     List<Widget> createRows() {
       List<Widget> allRows = new List();
@@ -29,10 +31,10 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
       for (int i = 0; i < question.answers.length; i++) {
         Widget w = CheckboxListTile(
           title: Text(question.answers[i].answerText),
-          value: _isSelected,
+          value: _isSelected(question.answers[i]),
           onChanged: (bool value) {
             setState(() {
-              _isSelected = value;
+              _setSelected(question.answers[i], value);
             });
           },
         );
@@ -89,9 +91,19 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
                   ),
                 ],
               ),
-            )
+            ),
+            widget.surveyDetail.questions.length == widget.index+1 ?
+            SubmitButton(onPressed: () {submitSurvey(widget.surveyDetail); popFromSubmit(context);},) : NextButton(onPressed: () => widget.controller.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut),),
           ],
         )
     );
+  }
+
+  _isSelected(Answer answer) {
+    return answer.value == "true";
+  }
+
+  _setSelected(Answer answer, bool selected) {
+    answer.value = selected ? "true" : "false";
   }
 }

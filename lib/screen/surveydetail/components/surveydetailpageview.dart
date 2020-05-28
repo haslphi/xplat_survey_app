@@ -23,18 +23,6 @@ class SurveyDetailsPageView extends StatelessWidget {
         itemCount: surveyDetail.questions.length,
         itemBuilder: (context, index) {
           return generateAnswerByType(surveyDetail: surveyDetail, index: index, controller: controller);
-          /*return Column(
-              children: <Widget>[
-                const Text('test'),
-              ]
-          );*/
-
-          /*return Container(
-            color: colorMap[index % colorMap.length],
-            child: Center(
-              child: Text(surveyDetail.questions[index].questionText),
-            ),
-          );*/
         });
   }
 }

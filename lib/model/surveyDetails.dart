@@ -17,6 +17,14 @@ class SurveyDetail {
     );
   }
 
+  Map<String, dynamic> toJson() =>
+      {
+        'id': id,
+        'title': title,
+        'desc': description,
+        'questions': questions.map((q) => q.toJson()).toList()
+      };
+
   @override
   String toString() {
     return '{ id: $id, title: $title, description: $description }';

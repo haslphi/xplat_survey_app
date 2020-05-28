@@ -7,9 +7,8 @@ class Question {
   final QuestionType type;
   final String questionText;
   final List<Answer> answers;
-  final String sAnswers;
 
-  Question({this.id, this.type, this.questionText, this.answers, this.sAnswers});
+  Question({this.id, this.type, this.questionText, this.answers});
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
@@ -19,6 +18,14 @@ class Question {
       answers: (json['answers'] as List).map((a) => Answer.fromJson(a)).toList(),
     );
   }
+
+  Map<String, dynamic> toJson() =>
+      {
+        'id': id,
+        'type': type.toString(),
+        'question': questionText,
+        'answers': answers.map((a) => a.toJson()).toList()
+      };
 
   @override
   String toString() {

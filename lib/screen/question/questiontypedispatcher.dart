@@ -9,10 +9,6 @@ import 'package:xplatsurveydemo/screen/question/ratingquestionscreen.dart';
 import 'package:xplatsurveydemo/screen/question/singlechoicequestionscreen.dart';
 import 'package:xplatsurveydemo/screen/question/yesnoquestionscreen.dart';
 
-enum RadioOptions { Option1, Option2, Option3 }
-
-RadioOptions _character = RadioOptions.Option1;
-
 Widget generateAnswerByType({@required SurveyDetail surveyDetail, @required int index, @required PageController controller}) {
   Widget result = Container();
   final Question question = surveyDetail.questions[index];
@@ -36,7 +32,6 @@ Widget generateAnswerByType({@required SurveyDetail surveyDetail, @required int 
       break;
     case QuestionType.RATING:
       result = RatingQuestion(surveyDetail: surveyDetail, index: index, controller: controller);
-//      result = Container(child: Center(child: Text(question.questionText, style: TextStyle(fontSize: 24),)),);
       break;
   }
 

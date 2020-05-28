@@ -75,3 +75,8 @@ void startSurvey(BuildContext context, SurveyDetail surveyDetail) {
     },
   ));
 }
+
+void popFromSubmit(BuildContext context) {
+  Navigator.pop(context);
+  Navigator.pop(context);
+}

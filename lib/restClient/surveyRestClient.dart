@@ -40,3 +40,20 @@ Future<SurveyDetail> fetchSurveyById(int surveyId) async {
     throw Exception('Failed to load surveys');
   }
 }
+
+submitSurvey(SurveyDetail surveyDetail) async {
+  final baseUrl = SurveyApiConstants.baseUrl;
+  final response = await http.post(
+    '$baseUrl/${surveyDetail.id}/answered/philipp',
+    headers: <String, String> {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(surveyDetail)
+  );
+
+  if (response.statusCode == 201) {
+    // well done
+  } else {
+    throw Exception('Failed to create survey answer.');
+  }
+}

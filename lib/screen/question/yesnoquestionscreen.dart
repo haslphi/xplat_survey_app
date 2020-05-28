@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:xplatsurveydemo/model/answer.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
+import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
+import 'package:xplatsurveydemo/screen/question/components/nextButton.dart';
+import 'package:xplatsurveydemo/screen/question/components/submitButton.dart';
 
 class YesNoQuestion extends StatefulWidget {
   const YesNoQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
@@ -10,18 +14,20 @@ class YesNoQuestion extends StatefulWidget {
   final PageController controller;
 
   @override
-  _YesNoQuestionState createState() => _YesNoQuestionState();
+  _YesNoQuestionState createState() => _YesNoQuestionState(surveyDetail.questions[index]);
 }
 
 class _YesNoQuestionState extends State<YesNoQuestion> {
-  Question question;
-  String _yesnoselected = "";
-//  List<String> alternatives = new List<String>();
+  Question _question;
+  String _selected;
+
+  _YesNoQuestionState(this._question) {
+    _question = this._question;
+    _selected = _getSelected();
+  }
 
   @override
   Widget build(BuildContext context) {
-    question = widget.surveyDetail.questions[widget.index];
-    //question.answers.map((a) => alternatives.add(a.value));
 
     return Padding(
         padding: EdgeInsets.all(16.0),
@@ -40,7 +46,7 @@ class _YesNoQuestionState extends State<YesNoQuestion> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Text(
-                          question.questionText,
+                          _question.questionText,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -68,22 +74,24 @@ class _YesNoQuestionState extends State<YesNoQuestion> {
                       children: <Widget>[
                         //Text(question.answers[0].toString())
                         RadioListTile<String>(
-                          title: Text(question.answers[0].answerText),
-                          value: question.answers[0].answerText,
-                          groupValue: _yesnoselected,
+                          title: Text(_question.answers[0].answerText),
+                          value: _question.answers[0].answerText,
+                          groupValue: _selected,
                           onChanged: (String value) {
+                            _updateSelected(value);
                             setState(() {
-                              _yesnoselected = value;
+                              _selected = value;
                             });
                           },
                         ),
                         RadioListTile<String>(
-                          title: Text(question.answers[1].answerText),
-                          value: question.answers[1].answerText,
-                          groupValue: _yesnoselected,
+                          title: Text(_question.answers[1].answerText),
+                          value: _question.answers[1].answerText,
+                          groupValue: _selected,
                           onChanged: (String value) {
+                            _updateSelected(value);
                             setState(() {
-                              _yesnoselected = value;
+                              _selected = value;
                             });
                           },
                         ),
@@ -92,9 +100,19 @@ class _YesNoQuestionState extends State<YesNoQuestion> {
                   ),
                 ],
               ),
-            )
+            ),
+            widget.surveyDetail.questions.length == widget.index+1 ?
+            SubmitButton(onPressed: () => submitSurvey(widget.surveyDetail),) : NextButton(onPressed: () => widget.controller.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut),),
           ],
         )
     );
+  }
+
+  _updateSelected(String selected) {
+    _question.answers.forEach((element) {element.answerText == selected ? element.value = "true" : element.value = "false";});
+  }
+  
+  _getSelected() {
+    return _question.answers.firstWhere((element) => element.value == "true", orElse: () => Answer(value: "")).answerText;
   }
 }

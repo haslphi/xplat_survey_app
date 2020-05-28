@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
+import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
+import 'package:xplatsurveydemo/screen/question/components/nextButton.dart';
+import 'package:xplatsurveydemo/screen/question/components/submitButton.dart';
 
 class NumberQuestion extends StatefulWidget {
   NumberQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
@@ -16,12 +19,30 @@ class NumberQuestion extends StatefulWidget {
 
 class _NumberQuestionState extends State<NumberQuestion> {
   Question question;
-  int val;
+  final textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    question = widget.surveyDetail.questions[widget.index];
+    textController.text = question.answers[0].value;
+    textController.addListener(_setInputToModel);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    textController.dispose();
+    super.dispose();
+  }
+
+  _setInputToModel() {
+    question.answers[0].value = textController.text;
+  }
 
   @override
   Widget build(BuildContext context) {
-    question = widget.surveyDetail.questions[widget.index];
-
     return Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
@@ -65,6 +86,7 @@ class _NumberQuestionState extends State<NumberQuestion> {
                       child: Column(
                         children: <Widget>[
                           TextField(
+                            controller: textController,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
                               WhitelistingTextInputFormatter.digitsOnly,
@@ -78,7 +100,9 @@ class _NumberQuestionState extends State<NumberQuestion> {
                   ),
                 ],
               ),
-            )
+            ),
+            widget.surveyDetail.questions.length == widget.index+1 ?
+            SubmitButton(onPressed: () => submitSurvey(widget.surveyDetail),) : NextButton(onPressed: () => widget.controller.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut),),
           ],
         )
     );

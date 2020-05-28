@@ -1,7 +1,7 @@
 class Answer {
   final int id;
   final String answerText;
-  final String value;
+  String value;
   final String min;
   final String max;
 
@@ -16,6 +16,15 @@ class Answer {
       max: json['max'],
     );
   }
+
+  Map<String, dynamic> toJson() =>
+      {
+        'id': id,
+        'answer': answerText,
+        'value': value,
+        'min': min,
+        'max': max
+      };
 
   @override
   String toString() {

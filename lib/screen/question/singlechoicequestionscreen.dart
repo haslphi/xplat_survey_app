@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:xplatsurveydemo/model/answer.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
+import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
+import 'package:xplatsurveydemo/screen/question/components/nextButton.dart';
+import 'package:xplatsurveydemo/screen/question/components/submitButton.dart';
 
 class SingleChoiceQuestion extends StatefulWidget {
   const SingleChoiceQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
@@ -10,28 +14,31 @@ class SingleChoiceQuestion extends StatefulWidget {
   final PageController controller;
 
   @override
-  _SingleChoiceQuestionState createState() => _SingleChoiceQuestionState();
+  _SingleChoiceQuestionState createState() => _SingleChoiceQuestionState(surveyDetail.questions[index]);
 }
 
 class _SingleChoiceQuestionState extends State<SingleChoiceQuestion> {
-  Question question;
-  String _selected = "";
-//  List<String> alternatives = new List();
+  Question _question;
+  String _selected;
+
+  _SingleChoiceQuestionState(this._question) {
+    _question = this._question;
+    _selected = _getSelected();
+  }
 
   @override
   Widget build(BuildContext context) {
-    question = widget.surveyDetail.questions[widget.index];
-    //question.answers.map((a) => alternatives.add(a.value));
 
-    List<Widget> createRows() {
+    List<Widget> _createRows() {
       List<Widget> allRows = new List();
 
-      for (int i = 0; i < question.answers.length; i++) {
+      for (int i = 0; i < _question.answers.length; i++) {
         Widget w = RadioListTile<String>(
-          title: Text(question.answers[i].answerText),
-          value: question.answers[i].answerText,
+          title: Text(_question.answers[i].answerText),
+          value: _question.answers[i].answerText,
           groupValue: _selected,
           onChanged: (String value) {
+            _updateSelected(value);
             setState(() {
               _selected = value;
             });
@@ -60,7 +67,7 @@ class _SingleChoiceQuestionState extends State<SingleChoiceQuestion> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Text(
-                          question.questionText,
+                          _question.questionText,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -85,14 +92,24 @@ class _SingleChoiceQuestionState extends State<SingleChoiceQuestion> {
                   Padding(
                       padding: EdgeInsets.all(10),
                       child: Column(
-                        children: createRows(),
+                        children: _createRows(),
                       )
                   ),
                 ],
               ),
-            )
+            ),
+            widget.surveyDetail.questions.length == widget.index+1 ?
+            SubmitButton(onPressed: () => submitSurvey(widget.surveyDetail),) : NextButton(onPressed: () => widget.controller.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut),),
           ],
         )
     );
+  }
+
+  _updateSelected(String selected) {
+    _question.answers.forEach((element) {element.answerText == selected ? element.value = "true" : element.value = "false";});
+  }
+
+  _getSelected() {
+    return _question.answers.firstWhere((element) => element.value == "true", orElse: () => Answer(value: "")).answerText;
   }
 }

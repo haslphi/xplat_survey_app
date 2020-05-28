@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
+import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
+import 'package:xplatsurveydemo/screen/question/components/nextButton.dart';
+import 'package:xplatsurveydemo/screen/question/components/submitButton.dart';
 
-class OpenQuestion extends StatelessWidget {
+class OpenQuestion extends StatefulWidget {
   OpenQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
 
   final int index;
@@ -10,9 +13,37 @@ class OpenQuestion extends StatelessWidget {
   final PageController controller;
 
   @override
+  _OpenQuestionState createState() => _OpenQuestionState(surveyDetail.questions[index]);
+}
+
+class _OpenQuestionState extends State<OpenQuestion> {
+  Question _question;
+  final textController = TextEditingController();
+
+  _OpenQuestionState(this._question);
+
+  @override
+  void initState() {
+    super.initState();
+    textController.text = _question.answers[0].value;
+    textController.addListener(_setInputToModel);
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    textController.dispose();
+    super.dispose();
+  }
+
+  _setInputToModel() {
+    _question.answers[0].value = textController.text;
+    print('Value: ${textController.text}');
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Question question;
-    question = surveyDetail.questions[index];
 
     return Padding(
         padding: EdgeInsets.all(16.0),
@@ -31,7 +62,7 @@ class OpenQuestion extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Text(
-                          question.questionText,
+                          _question.questionText,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -64,9 +95,10 @@ class OpenQuestion extends StatelessWidget {
 //                            ),
 //                          ),
                         TextField(
+                          controller: textController,
                           keyboardType: TextInputType.multiline,
-                          minLines: 5,
-                          maxLines: 20,
+                          minLines: 3,
+                          maxLines: 6,
                           decoration: InputDecoration(
                                 labelText: 'Enter your answer'
                             ),
@@ -76,42 +108,11 @@ class OpenQuestion extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            widget.surveyDetail.questions.length == widget.index+1 ?
+            SubmitButton(onPressed: () => submitSurvey(widget.surveyDetail),) : NextButton(onPressed: () => widget.controller.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut),),
           ],
         )
     );
-    /*return Container(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            
-              Row(
-                children: <Widget>[
-                  Card(
-                    child: Text(
-                      surveyDetail.questions[index].questionText,
-                      style: TextStyle(fontSize: 24),),
-                  ),
-                ]
-              ),
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[TextFormField(
-                  decoration: InputDecoration(
-                      labelText: 'Enter your answer'
-                  ),
-                ),
-              ]),
-            ),
-            FlatButton.icon(
-                onPressed: null,
-                icon: Icon(Icons.navigate_next, size: 40.0,),
-                label: Text('Proceed', style: TextStyle(fontSize: 24),)
-            ),
-          ]
-      ),
-    );*/
   }
 }
