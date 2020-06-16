@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () => openSurveyOverview(context),
             ),
             HomeTile(
-              icon: Icons.play_circle_outline,
+              icon: Icons.folder_open,
               iconTag: resumeSurveyIconTag,
               tileTitle: PT_RESUME_SURVEY,
             ),

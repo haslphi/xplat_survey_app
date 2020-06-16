@@ -69,7 +69,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
               )
           ),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text('Start Survey'),
+        label: Text('Start'),
         backgroundColor: Theme.of(context).primaryColor,
         icon: Icon(
           Icons.play_arrow

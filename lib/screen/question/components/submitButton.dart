@@ -11,7 +11,8 @@ class SubmitButton extends StatelessWidget {
       child: Align(
         alignment: Alignment.bottomRight,
         child: FloatingActionButton.extended(
-          label: Text('Submit Survey'),
+          icon: Icon(Icons.send),
+          label: Text('Submit'),
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: onPressed,
         ),
