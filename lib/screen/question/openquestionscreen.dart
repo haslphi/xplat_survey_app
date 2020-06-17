@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
-import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
-import 'package:xplatsurveydemo/screen/question/components/nextButton.dart';
-import 'package:xplatsurveydemo/screen/question/components/submitButton.dart';
+import 'package:xplatsurveydemo/screen/question/components/questionButtonBar.dart';
 
 class OpenQuestion extends StatefulWidget {
   OpenQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
@@ -109,8 +107,12 @@ class _OpenQuestionState extends State<OpenQuestion> {
                 ],
               ),
             ),
-            widget.surveyDetail.questions.length == widget.index+1 ?
-            SubmitButton(onPressed: () => submitSurvey(widget.surveyDetail),) : NextButton(onPressed: () => widget.controller.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut),),
+            QuestionButtonBar(
+              isFirst: 0 == widget.index,
+              isLast: widget.surveyDetail.questions.length == widget.index+1,
+              surveyDetail: widget.surveyDetail,
+              pageController: widget.controller,
+            ),
           ],
         )
     );

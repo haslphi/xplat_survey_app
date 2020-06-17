@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/question.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
-import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
-import 'package:xplatsurveydemo/screen/question/components/nextButton.dart';
-import 'package:xplatsurveydemo/screen/question/components/submitButton.dart';
-import 'package:xplatsurveydemo/service/navigation.dart';
+import 'package:xplatsurveydemo/screen/question/components/questionButtonBar.dart';
 
 class RatingQuestion extends StatefulWidget {
   const RatingQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
@@ -143,8 +140,12 @@ class _RatingQuestionState extends State<RatingQuestion> {
                         ]..addAll(createRows()), //Create Rows
                       ),
                     ),
-                widget.surveyDetail.questions.length == widget.index+1 ?
-                  SubmitButton(onPressed: () {submitSurvey(widget.surveyDetail); popFromSubmit(context);},) : NextButton(onPressed: () => widget.controller.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut),),
+                QuestionButtonBar(
+                  isFirst: 0 == widget.index,
+                  isLast: widget.surveyDetail.questions.length == widget.index+1,
+                  surveyDetail: widget.surveyDetail,
+                  pageController: widget.controller,
+                ),
               ],
             ),
           );

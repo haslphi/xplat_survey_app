@@ -13,5 +13,13 @@ const String surveyOverviewIconTag = 'surveyOverviewIcon';
 const String addSurveyIconTag = 'addSurveyIcon';
 const String resumeSurveyIconTag = 'resumeSurveyIcon';
 
+const String detailsResumeSurveyIconTag = 'detailsResumeSurveyIconTag';
+const String detailsStartSurveyIconTag = 'detailsStartSurveyIconTag';
+
+const String nextIconTag = 'nextIconTag';
+const String previousIconTag = 'previousIconTag';
+const String submitIconTag = 'submitIconTag';
+const String pauseIconTag = 'pauseIconTag';
+
 // SharedPreferences
 const String SURVEYS_SEEN = 'SURVEYS_SEEN';
