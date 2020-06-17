@@ -3,6 +3,7 @@ import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/components/surveydetaildescription.dart';
 import 'package:xplatsurveydemo/screen/surveyoverview/components/surveyoverviewicon.dart';
+import 'package:xplatsurveydemo/service/const.dart';
 import 'package:xplatsurveydemo/service/navigation.dart';
 import 'package:xplatsurveydemo/service/persistence.dart';
 
@@ -52,29 +53,55 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
           ],
         ),
       ),
-      body: Container(
-              child: FutureBuilder(
-                future: futureSurvey,
-                builder: (context, surveySnap) {
-                  if (surveySnap.hasData) {
-                    surveyDetail = surveySnap.data;
-                    Persistence.addSurveySeen(surveyDetail.id);
-                    return SurveyDetailDescription(surveyDetail: surveyDetail, backgroundColor: widget.backgroundColor,);
-                  } else if (surveySnap.hasError) {
-                    return Text("${surveySnap.error}");
-                  }
-                  // By default, show a loading spinner.
-                  return CircularProgressIndicator();
-                },
-              )
-          ),
-      floatingActionButton: FloatingActionButton.extended(
-        label: Text('Start'),
-        backgroundColor: Theme.of(context).primaryColor,
-        icon: Icon(
-          Icons.play_arrow
-        ),
-        onPressed: () => startSurvey(context, surveyDetail),
+      body: Column(
+        children: <Widget>[
+          Container(
+                  child: FutureBuilder(
+                    future: futureSurvey,
+                    builder: (context, surveySnap) {
+                      if (surveySnap.hasData) {
+                        surveyDetail = surveySnap.data;
+                        Persistence.addSurveySeen(surveyDetail.id);
+                        return SurveyDetailDescription(surveyDetail: surveyDetail, backgroundColor: widget.backgroundColor,);
+                      } else if (surveySnap.hasError) {
+                        return Text("${surveySnap.error}");
+                      }
+                      // By default, show a loading spinner.
+                      return CircularProgressIndicator();
+                    },
+                  )
+              ),
+          Expanded(
+            child: Align(
+              // aligns row with buttons to bottom of expanded widget
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton.icon(
+                      color: Theme.of(context).primaryColor,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(side: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
+                      icon: Icon(Icons.folder_open),
+                      label: Text('Resume'),
+                      onPressed: () => startSurvey(context, surveyDetail),
+                    ),
+                    SizedBox(width: 16,),
+                    FloatingActionButton.extended(
+                      icon: Icon(Icons.play_arrow),
+                      label: Text('Start'),
+                      backgroundColor: widget.backgroundColor,
+                      onPressed: () => startSurvey(context, surveyDetail),
+                      heroTag: detailsStartSurveyIconTag,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
