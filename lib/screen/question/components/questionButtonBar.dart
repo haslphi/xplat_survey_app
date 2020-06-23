@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/model/surveyPaused.dart';
-import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
+import 'package:xplatsurveydemo/restClient/surveyRestClient.dart' as REST;
 import 'package:xplatsurveydemo/service/const.dart' as Const;
 import 'package:xplatsurveydemo/service/navigation.dart' as Nav;
 import 'package:xplatsurveydemo/service/persistence.dart';
@@ -12,12 +12,14 @@ class QuestionButtonBar extends StatelessWidget {
       {@required this.isFirst,
       @required this.isLast,
       @required this.surveyDetail,
-      @required this.pageController,});
+      @required this.pageController,
+      @required this.scaffoldKey});
 
   final bool isFirst;
   final bool isLast;
   final PageController pageController;
   final SurveyDetail surveyDetail;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   _createButtons(BuildContext context) {
     List<Widget> list = List<Widget>();
@@ -37,9 +39,11 @@ class QuestionButtonBar extends StatelessWidget {
       child: Icon(Icons.pause),
       onPressed: () {
         Persistence.addSurveyPaused(SurveyPaused(
-            surveyDetail: surveyDetail,
-            pausedAtPageIndex: pageController.page));
-        Nav.popFromPause(context);
+                surveyDetail: surveyDetail,
+                pausedAtPageIndex: pageController.page))
+            .then((value) => value
+                ? Nav.popFromPause(context)
+                : _showException('Survey could not be paused and saved'));
       },
       shape: RoundedRectangleBorder(
           side: BorderSide.none,
@@ -63,12 +67,26 @@ class QuestionButtonBar extends StatelessWidget {
         label: Text('Submit'),
         backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
-          submitSurvey(surveyDetail);
-          Nav.popFromSubmit(context);
+          REST
+              .submitSurvey(surveyDetail)
+              .then(
+                  (value) => value
+                      ? Nav.popFromSubmit(context)
+                      : _showException('Submit was not successfull'),
+                  onError: (e) => _showException(e.toString()))
+              .then((value) => Persistence.removeSurveyPaused(surveyDetail.id));
         },
         heroTag: Const.submitIconTag,
       ));
     return list;
+  }
+
+  _showException(String errorMessage) {
+    scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(errorMessage),
+      duration: Duration(seconds: 5),
+      backgroundColor: Colors.red,
+    ));
   }
 
   @override

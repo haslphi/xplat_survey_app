@@ -32,6 +32,10 @@ class Persistence {
     return prefs?.setStringList(key, value) ?? Future.value(false);
   }
 
+  static Future<bool> remove(String key) {
+    return _prefsInstance.remove(key);
+  }
+
   static Future<bool> addSurveySeen(int surveyId) {
     List<String> surveysSeen = getStringList(Const.SURVEYS_SEEN) ?? List<String>();
     if(surveysSeen.contains(surveyId.toString())) {
@@ -54,6 +58,10 @@ class Persistence {
        surveyPaused = SurveyPaused.fromJson(surveyPausedJSON);
      }
      return surveyPaused;
+  }
+
+  static removeSurveyPaused(int surveyId) {
+    return remove('${Const.SURVEY_PAUSED}${surveyId.toString()}');
   }
 
   static Future<bool> clear() async {

@@ -3,10 +3,11 @@ import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/screen/question/questiontypedispatcher.dart';
 
 class SurveyDetailsPageView extends StatefulWidget {
-  SurveyDetailsPageView({this.surveyDetail, this.pageIndex});
+  SurveyDetailsPageView({@required this.surveyDetail, this.pageIndex = 0, @required this.scaffoldKey});
 
   final SurveyDetail surveyDetail;
   final int pageIndex;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   _SurveyDetailsPageViewState createState() => _SurveyDetailsPageViewState();
@@ -41,7 +42,7 @@ class _SurveyDetailsPageViewState extends State<SurveyDetailsPageView> {
         controller: controller,
         itemCount: widget.surveyDetail.questions.length,
         itemBuilder: (context, index) {
-          return generateAnswerByType(surveyDetail: widget.surveyDetail, index: index, controller: controller);
+          return generateAnswerByType(surveyDetail: widget.surveyDetail, index: index, controller: controller, scaffoldKey: widget.scaffoldKey);
         });
   }
 }

@@ -6,10 +6,11 @@ import 'package:xplatsurveydemo/model/surveyDetails.dart';
 
 class SurveyApiConstants {
   static const baseUrl = 'http://www.birnbaua.at/jku/questionnaires';
+  static const timeoutDuration = Duration(seconds: 5);
 }
 
 Future<List<Survey>> fetchSurveys() async {
-  final response = await http.get(SurveyApiConstants.baseUrl);
+  final response = await http.get(SurveyApiConstants.baseUrl).timeout(SurveyApiConstants.timeoutDuration);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -26,7 +27,7 @@ Future<List<Survey>> fetchSurveys() async {
 
 Future<SurveyDetail> fetchSurveyById(int surveyId) async {
   final baseUrl = SurveyApiConstants.baseUrl;
-  final response = await http.get('$baseUrl/$surveyId');
+  final response = await http.get('$baseUrl/$surveyId').timeout(SurveyApiConstants.timeoutDuration);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -41,7 +42,7 @@ Future<SurveyDetail> fetchSurveyById(int surveyId) async {
   }
 }
 
-submitSurvey(SurveyDetail surveyDetail) async {
+Future<bool> submitSurvey(SurveyDetail surveyDetail) async {
   final baseUrl = SurveyApiConstants.baseUrl;
   final response = await http.post(
     '$baseUrl/${surveyDetail.id}/answered/philipp',
@@ -49,10 +50,11 @@ submitSurvey(SurveyDetail surveyDetail) async {
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(surveyDetail)
-  );
+  ).timeout(SurveyApiConstants.timeoutDuration);
 
-  if (response.statusCode == 201) {
+  if (response.statusCode == 200) {
     // well done
+    return true;
   } else {
     throw Exception('Failed to create survey answer.');
   }

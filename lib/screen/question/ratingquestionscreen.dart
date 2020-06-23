@@ -4,11 +4,12 @@ import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/screen/question/components/questionButtonBar.dart';
 
 class RatingQuestion extends StatefulWidget {
-  const RatingQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
+  const RatingQuestion({@required this.surveyDetail, @required this.index, @required this.controller, @required this.scaffoldKey});
 
   final int index;
   final SurveyDetail surveyDetail;
   final PageController controller;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   _RatingQuestionState createState() => _RatingQuestionState();
@@ -145,6 +146,7 @@ class _RatingQuestionState extends State<RatingQuestion> {
                   isLast: widget.surveyDetail.questions.length == widget.index+1,
                   surveyDetail: widget.surveyDetail,
                   pageController: widget.controller,
+                  scaffoldKey: widget.scaffoldKey,
                 ),
               ],
             ),

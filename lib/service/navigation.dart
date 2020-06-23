@@ -41,13 +41,14 @@ void openSurveyOverview(BuildContext context) {
   ));
 }
 
-void openNewSurveysOverview(BuildContext context, String iconTag) {
+void openNewSurveysOverview(BuildContext context, String iconTag, String title) {
   Navigator.push(context, MaterialPageRoute(
     builder: (BuildContext context) {
       return SurveyOverviewScreen(
         filter: (survey) => (!Persistence.getStringList(Const.SURVEYS_SEEN).contains(survey.id.toString())),
         iconData: Icons.add_alert,
         iconTag: iconTag,
+        title: title,
       );
     },
   ));
@@ -64,12 +65,14 @@ void openAddSurvey(BuildContext context) {
 void startSurvey(BuildContext context, SurveyDetail surveyDetail, {int pageIndex}) {
   Navigator.push(context, MaterialPageRoute(
     builder: (BuildContext context) {
+      final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
       return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(surveyDetail.title),
         ),
         body: Center(
-          child: SurveyDetailsPageView(surveyDetail: surveyDetail, pageIndex: pageIndex,),
+          child: SurveyDetailsPageView(surveyDetail: surveyDetail, pageIndex: pageIndex, scaffoldKey: _scaffoldKey,),
         ),
       );
     },

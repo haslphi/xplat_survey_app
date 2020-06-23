@@ -5,11 +5,12 @@ import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/screen/question/components/questionButtonBar.dart';
 
 class MultipleChoiceQuestion extends StatefulWidget {
-  const MultipleChoiceQuestion({@required this.surveyDetail, @required this.index, @required this.controller});
+  const MultipleChoiceQuestion({@required this.surveyDetail, @required this.index, @required this.controller, @required this.scaffoldKey});
 
   final int index;
   final SurveyDetail surveyDetail;
   final PageController controller;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   _MultipleChoiceQuestionState createState() => _MultipleChoiceQuestionState();
@@ -94,6 +95,7 @@ class _MultipleChoiceQuestionState extends State<MultipleChoiceQuestion> {
               isLast: widget.surveyDetail.questions.length == widget.index+1,
               surveyDetail: widget.surveyDetail,
               pageController: widget.controller,
+              scaffoldKey: widget.scaffoldKey,
             ),
           ],
         )

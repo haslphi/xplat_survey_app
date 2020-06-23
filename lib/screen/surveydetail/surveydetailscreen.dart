@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/model/surveyPaused.dart';
-import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
+import 'package:xplatsurveydemo/restClient/surveyRestClient.dart' as REST;
 import 'package:xplatsurveydemo/screen/surveydetail/components/surveydetaildescription.dart';
 import 'package:xplatsurveydemo/screen/surveyoverview/components/surveyoverviewicon.dart';
 import 'package:xplatsurveydemo/service/const.dart' as Const;
@@ -35,7 +35,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
   @override
   void initState() {
     super.initState();
-    futureSurvey = fetchSurveyById(widget.surveyId);
+    futureSurvey = REST.fetchSurveyById(widget.surveyId);
     surveyPaused = surveyPaused ?? Persistence.getSurveyPaused(widget.surveyId);
   }
 

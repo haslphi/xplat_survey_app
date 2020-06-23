@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/survey.dart';
-import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
+import 'package:xplatsurveydemo/restClient/surveyRestClient.dart' as REST;
 import 'package:xplatsurveydemo/screen/surveyoverview/components/surveyoverviewtile.dart';
-import 'package:xplatsurveydemo/service/const.dart';
+import 'package:xplatsurveydemo/service/const.dart' as Const;
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 final SnackBar snackBar = const SnackBar(content: Text('This is a list of all available surveys'));
@@ -10,11 +10,19 @@ bool _defaultFilter(Survey survey) => true;
 
 class SurveyOverviewScreen extends StatefulWidget {
   // default values target "All Survey" list
-  SurveyOverviewScreen({Key key, this.filter = _defaultFilter, this.iconData = Icons.list, this.iconTag = surveyOverviewIconTag}) : super(key: key);
+  SurveyOverviewScreen(
+      {
+        Key key,
+        this.filter = _defaultFilter,
+        this.iconData = Icons.list,
+        this.iconTag = Const.surveyOverviewIconTag,
+        this.title = Const.PT_SURVEY_LIST
+      }) : super(key: key);
 
   final bool Function(Survey) filter;
   final IconData iconData;
   final String iconTag;
+  final String title;
 
   @override
   _SurveyOverviewScreenState createState() => _SurveyOverviewScreenState();
@@ -26,7 +34,7 @@ class _SurveyOverviewScreenState extends State<SurveyOverviewScreen> {
   @override
   void initState() {
     super.initState();
-    futureSurveys = fetchSurveys();
+    futureSurveys = REST.fetchSurveys();
   }
 
   @override
@@ -43,7 +51,7 @@ class _SurveyOverviewScreenState extends State<SurveyOverviewScreen> {
               ),
             ),
             Spacer(),
-            const Text(PT_SURVEY_LIST),
+            Text(widget.title),
             Spacer(flex: 5,),
           ],
         ),
