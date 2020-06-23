@@ -3,7 +3,7 @@ import 'package:xplatsurveydemo/model/surveyDetails.dart';
 const String _pageIndex = 'pausedAtPageIndex';
 const String _surveyDetail = 'surveyDetail';
 
-class SurveyPaused extends SurveyDetail {
+class SurveyPaused {
   final double pausedAtPageIndex;
   final SurveyDetail surveyDetail;
 

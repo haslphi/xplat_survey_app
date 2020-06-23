@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/screen/addsurvey/addsurveyscreen.dart';
+import 'package:xplatsurveydemo/screen/resumesurvey/resumesurveylist.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/components/surveydetailpageview.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/surveydetailscreen.dart';
 import 'package:xplatsurveydemo/screen/surveyoverview/surveyoverviewscreen.dart';
@@ -35,9 +36,13 @@ void openSurveyDetailsPage(BuildContext context, int id, String surveyTitle, Col
 
 void openSurveyOverview(BuildContext context) {
   Navigator.push(context, MaterialPageRoute(
-    builder: (BuildContext context) {
-      return SurveyOverviewScreen();
-    },
+    builder: (BuildContext context) => SurveyOverviewScreen(),
+  ));
+}
+
+void openResumeSurveyList(BuildContext context) {
+  Navigator.push(context, MaterialPageRoute(
+    builder: (context) => ResumeSurveyList(),
   ));
 }
 
@@ -56,9 +61,7 @@ void openNewSurveysOverview(BuildContext context, String iconTag, String title) 
 
 void openAddSurvey(BuildContext context) {
   Navigator.push(context, MaterialPageRoute(
-    builder: (BuildContext context) {
-      return AddSurveyScreen();
-    },
+    builder: (BuildContext context) => AddSurveyScreen(),
   ));
 }
 // todo: remove Scaffold creation from this helper class

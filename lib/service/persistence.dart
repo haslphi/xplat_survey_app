@@ -49,7 +49,7 @@ class Persistence {
     return setString('${Const.SURVEY_PAUSED}${surveyPaused.surveyDetail.id.toString()}', jsonEncode(surveyPaused));
   }
 
-  static getSurveyPaused(int surveyId) {
+  static SurveyPaused getSurveyPaused(int surveyId) {
     String surveyPausedString = getString('${Const.SURVEY_PAUSED}${surveyId.toString()}');
 //    String surveyPausedString = loadFile('assets/data.json', context).then((value) => null);
      SurveyPaused surveyPaused;

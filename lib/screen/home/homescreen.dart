@@ -40,6 +40,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icons.folder_open,
               iconTag: Const.resumeSurveyIconTag,
               tileTitle: Const.PT_RESUME_SURVEY,
+              onPressed: () => Nav.openResumeSurveyList(context),
             ),
             HomeTile(
               icon: Icons.add_circle_outline,
