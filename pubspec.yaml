@@ -84,3 +84,6 @@ flutter:
       fonts:
         # https://fonts.google.com/specimen/Rock+Salt
         - asset: fonts/RockSalt-Regular.ttf
+
+  assets:
+    - assets/pausedSurvey.json

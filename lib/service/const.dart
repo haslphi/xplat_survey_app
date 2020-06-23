@@ -23,3 +23,4 @@ const String pauseIconTag = 'pauseIconTag';
 
 // SharedPreferences
 const String SURVEYS_SEEN = 'SURVEYS_SEEN';
+const String SURVEY_PAUSED = 'SURVEY_PAUSED_';

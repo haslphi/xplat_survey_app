@@ -1,0 +1,136 @@
+{
+  "id":1,
+  "title":"Testfragebogen",
+  "desc":"dies ist ein testfragebogen mit allen fragearten",
+  "questions":[
+    {
+      "id":25,
+      "type":"OPEN",
+      "question":"Offene frage",
+      "answers":[
+        {
+          "id":26,
+          "answer":"Antwort",
+          "value":"true",
+          "min":"",
+          "max":""
+        }
+      ]
+    },
+    {
+      "id":27,
+      "type":"YES_NO",
+      "question":"Ja nein frage",
+      "answers":[
+        {
+          "id":28,
+          "answer":"YES",
+          "value":"false",
+          "min":"",
+          "max":""
+        },
+        {
+          "id":29,
+          "answer":"NO",
+          "value":"false",
+          "min":"",
+          "max":""
+        }
+      ]
+    },
+    {
+      "id":30,
+      "type":"SINGLE_CHOICE",
+      "question":"Single choice frage",
+      "answers":[
+        {
+          "id":31,
+          "answer":"a1",
+          "value":"false",
+          "min":"",
+          "max":""
+        },
+        {
+          "id":32,
+          "answer":"a2",
+          "value":"false",
+          "min":"",
+          "max":""
+        },
+        {
+          "id":33,
+          "answer":"a3",
+          "value":"false",
+          "min":"",
+          "max":""
+        }
+      ]
+    },
+    {
+      "id":34,
+      "type":"MULTIPLE_CHOICE",
+      "question":"Multiple choice frage",
+      "answers":[
+        {
+          "id":35,
+          "answer":"b1",
+          "value":"false",
+          "min":"",
+          "max":""
+        },
+        {
+          "id":36,
+          "answer":"b2",
+          "value":"false",
+          "min":"",
+          "max":""
+        },
+        {
+          "id":37,
+          "answer":"b3",
+          "value":"false",
+          "min":"",
+          "max":""
+        }
+      ]
+    },
+    {
+      "id":38,
+      "type":"NUMBER",
+      "question":"Zahlenfrage",
+      "answers":[
+        {
+          "id":39,
+          "answer":"dein alter",
+          "value":"69",
+          "min":"0",
+          "max":"99"
+        }
+      ]
+    },
+    {
+      "id":40,
+      "type":"RATING",
+      "question":"Rating frage",
+      "answers":[
+        {
+          "id":41,
+          "answer":"iron man",
+          "value":"0",
+          "min":"0",
+          "max":"5"
+        },
+        {
+          "id":42,
+          "answer":"ant man",
+          "value":"0",
+          "min":"0",
+          "max":"5"
+        }
+      ]
+    }
+  ],
+  "answered":[
+
+  ]
+}

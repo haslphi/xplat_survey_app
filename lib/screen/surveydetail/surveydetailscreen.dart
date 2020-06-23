@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
+import 'package:xplatsurveydemo/model/surveyPaused.dart';
 import 'package:xplatsurveydemo/restClient/surveyRestClient.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/components/surveydetaildescription.dart';
 import 'package:xplatsurveydemo/screen/surveyoverview/components/surveyoverviewicon.dart';
-import 'package:xplatsurveydemo/service/const.dart';
-import 'package:xplatsurveydemo/service/navigation.dart';
+import 'package:xplatsurveydemo/service/const.dart' as Const;
+import 'package:xplatsurveydemo/service/navigation.dart' as Nav;
 import 'package:xplatsurveydemo/service/persistence.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -27,18 +30,19 @@ class SurveyDetailScreen extends StatefulWidget {
 class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
   Future<SurveyDetail> futureSurvey;
   SurveyDetail surveyDetail;
+  SurveyPaused surveyPaused;
 
   @override
   void initState() {
     super.initState();
     futureSurvey = fetchSurveyById(widget.surveyId);
+    surveyPaused = surveyPaused ?? Persistence.getSurveyPaused(widget.surveyId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //title: Text(widget.surveyId.toString() + ' ' + widget.surveyTitle),
         title: Row(
           children: <Widget>[
             SurveyOverviewIcon(id: widget.surveyId, size: SurveyOverviewIconSize.SMALL, backgroundColor: widget.backgroundColor,),
@@ -80,21 +84,20 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    FlatButton.icon(
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
+                    OutlineButton(
+                      // transform form to json string and backwards to make a 'clone'
+                      onPressed: surveyPaused != null ? () => Nav.startSurvey(context, SurveyPaused.fromJson(jsonDecode(jsonEncode(surveyPaused))).surveyDetail, pageIndex: surveyPaused.pausedAtPageIndex.toInt()) : null,
+                      textColor: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(side: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
-                      icon: Icon(Icons.folder_open),
-                      label: Text('Resume'),
-                      onPressed: () => startSurvey(context, surveyDetail),
+                      child: Text('Resume'),
                     ),
                     SizedBox(width: 16,),
                     FloatingActionButton.extended(
                       icon: Icon(Icons.play_arrow),
                       label: Text('Start'),
                       backgroundColor: widget.backgroundColor,
-                      onPressed: () => startSurvey(context, surveyDetail),
-                      heroTag: detailsStartSurveyIconTag,
+                      onPressed: () => Nav.startSurvey(context, SurveyDetail.fromJson(jsonDecode(jsonEncode(surveyDetail))), pageIndex: 0),
+                      heroTag: Const.detailsStartSurveyIconTag,
                     ),
                   ],
                 ),

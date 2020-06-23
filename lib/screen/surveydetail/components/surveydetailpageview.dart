@@ -3,16 +3,17 @@ import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/screen/question/questiontypedispatcher.dart';
 
 class SurveyDetailsPageView extends StatefulWidget {
-  SurveyDetailsPageView({this.surveyDetail});
+  SurveyDetailsPageView({this.surveyDetail, this.pageIndex});
 
   final SurveyDetail surveyDetail;
+  final int pageIndex;
 
   @override
   _SurveyDetailsPageViewState createState() => _SurveyDetailsPageViewState();
 }
 
 class _SurveyDetailsPageViewState extends State<SurveyDetailsPageView> {
-  final PageController controller = PageController();
+  PageController controller;
 
   final Map<int, Color> colorMap = {
     0: Colors.red,
@@ -21,6 +22,12 @@ class _SurveyDetailsPageViewState extends State<SurveyDetailsPageView> {
     3: Colors.green,
     4: Colors.blue,
   };
+
+  @override
+  void initState() {
+    super.initState();
+    controller = PageController(initialPage: widget.pageIndex);
+  }
 
   @override
   void dispose() {

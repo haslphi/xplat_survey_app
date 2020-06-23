@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:xplatsurveydemo/service/const.dart';
+import 'package:xplatsurveydemo/model/surveyPaused.dart';
+import 'package:xplatsurveydemo/service/const.dart' as Const;
 
 class Persistence {
   static Future<SharedPreferences> get _instance async => _prefsInstance ??= await SharedPreferences.getInstance();
@@ -29,16 +33,35 @@ class Persistence {
   }
 
   static Future<bool> addSurveySeen(int surveyId) {
-    List<String> surveysSeen = getStringList(SURVEYS_SEEN) ?? List<String>();
+    List<String> surveysSeen = getStringList(Const.SURVEYS_SEEN) ?? List<String>();
     if(surveysSeen.contains(surveyId.toString())) {
       return Future.value(true);
     }
     surveysSeen.add(surveyId.toString());
-    return setStringList(SURVEYS_SEEN, surveysSeen);
+    return setStringList(Const.SURVEYS_SEEN, surveysSeen);
+  }
+
+  static Future<bool> addSurveyPaused(SurveyPaused surveyPaused) {
+    return setString('${Const.SURVEY_PAUSED}${surveyPaused.surveyDetail.id.toString()}', jsonEncode(surveyPaused));
+  }
+
+  static getSurveyPaused(int surveyId) {
+    String surveyPausedString = getString('${Const.SURVEY_PAUSED}${surveyId.toString()}');
+//    String surveyPausedString = loadFile('assets/data.json', context).then((value) => null);
+     SurveyPaused surveyPaused;
+     if(surveyPausedString.isNotEmpty) {
+       Map<String, dynamic> surveyPausedJSON = jsonDecode(surveyPausedString);
+       surveyPaused = SurveyPaused.fromJson(surveyPausedJSON);
+     }
+     return surveyPaused;
   }
 
   static Future<bool> clear() async {
     var prefs = await _instance;
     return prefs?.clear() ?? Future.value(false);
+  }
+
+  Future<String> loadFile(String fileName, BuildContext context) async {
+    return await DefaultAssetBundle.of(context).loadString(fileName);
   }
 }

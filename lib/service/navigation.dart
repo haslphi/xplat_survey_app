@@ -4,7 +4,7 @@ import 'package:xplatsurveydemo/screen/addsurvey/addsurveyscreen.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/components/surveydetailpageview.dart';
 import 'package:xplatsurveydemo/screen/surveydetail/surveydetailscreen.dart';
 import 'package:xplatsurveydemo/screen/surveyoverview/surveyoverviewscreen.dart';
-import 'package:xplatsurveydemo/service/const.dart';
+import 'package:xplatsurveydemo/service/const.dart' as Const;
 import 'package:xplatsurveydemo/service/persistence.dart';
 
 void openAppBarPage(BuildContext context, String surveyJson) {
@@ -45,7 +45,7 @@ void openNewSurveysOverview(BuildContext context, String iconTag) {
   Navigator.push(context, MaterialPageRoute(
     builder: (BuildContext context) {
       return SurveyOverviewScreen(
-        filter: (survey) => (!Persistence.getStringList(SURVEYS_SEEN).contains(survey.id.toString())),
+        filter: (survey) => (!Persistence.getStringList(Const.SURVEYS_SEEN).contains(survey.id.toString())),
         iconData: Icons.add_alert,
         iconTag: iconTag,
       );
@@ -61,7 +61,7 @@ void openAddSurvey(BuildContext context) {
   ));
 }
 // todo: remove Scaffold creation from this helper class
-void startSurvey(BuildContext context, SurveyDetail surveyDetail) {
+void startSurvey(BuildContext context, SurveyDetail surveyDetail, {int pageIndex}) {
   Navigator.push(context, MaterialPageRoute(
     builder: (BuildContext context) {
       return Scaffold(
@@ -69,7 +69,7 @@ void startSurvey(BuildContext context, SurveyDetail surveyDetail) {
           title: Text(surveyDetail.title),
         ),
         body: Center(
-          child: SurveyDetailsPageView(surveyDetail: surveyDetail,),
+          child: SurveyDetailsPageView(surveyDetail: surveyDetail, pageIndex: pageIndex,),
         ),
       );
     },
@@ -77,6 +77,11 @@ void startSurvey(BuildContext context, SurveyDetail surveyDetail) {
 }
 
 void popFromSubmit(BuildContext context) {
+  Navigator.pop(context);
+  Navigator.pop(context);
+}
+
+void popFromPause(BuildContext context) {
   Navigator.pop(context);
   Navigator.pop(context);
 }

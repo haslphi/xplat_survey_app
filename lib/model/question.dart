@@ -22,7 +22,7 @@ class Question {
   Map<String, dynamic> toJson() =>
       {
         'id': id,
-        'type': type.toString(),
+        'type': EnumToString.parse(type),
         'question': questionText,
         'answers': answers.map((a) => a.toJson()).toList()
       };
