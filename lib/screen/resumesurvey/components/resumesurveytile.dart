@@ -48,7 +48,7 @@ class ResumeSurveyListTile extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 2,
-                child: Center(child: SurveyOverviewIcon(id: surveyPaused.surveyDetail.id, backgroundColor: colorMap[surveyPaused.surveyDetail.id % colorMap.length],)),
+                child: Center(child: SurveyOverviewIcon(id: surveyPaused.surveyDetail.id, backgroundColor: colorMap[surveyPaused.surveyDetail.id % colorMap.length], indicateLocal: surveyPaused.isLocal,)),
               ),
               Expanded(
                 flex: 5,

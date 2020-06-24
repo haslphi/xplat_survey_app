@@ -40,7 +40,8 @@ class QuestionButtonBar extends StatelessWidget {
       onPressed: () {
         Persistence.addSurveyPaused(SurveyPaused(
                 surveyDetail: surveyDetail,
-                pausedAtPageIndex: pageController.page))
+                pausedAtPageIndex: pageController.page,
+                isLocal: surveyDetail.isLocal,))
             .then((value) => value
                 ? Nav.popFromPause(context)
                 : _showException('Survey could not be paused and saved'));
@@ -66,16 +67,19 @@ class QuestionButtonBar extends StatelessWidget {
         icon: Icon(Icons.send),
         label: Text('Submit'),
         backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () {
-          REST
-              .submitSurvey(surveyDetail)
-              .then(
-                  (value) => value
-                      ? Nav.popFromSubmit(context)
-                      : _showException('Submit was not successfull'),
-                  onError: (e) => _showException(e.toString()))
-              .then((value) => Persistence.removeSurveyPaused(surveyDetail.id));
-        },
+        onPressed: surveyDetail.isLocal
+            ? null
+            : () {
+                REST
+                    .submitSurvey(surveyDetail)
+                    .then(
+                        (value) => value
+                            ? Nav.popFromSubmit(context)
+                            : _showException('Submit was not successfull'),
+                        onError: (e) => _showException(e.toString()))
+                    .then((value) =>
+                        Persistence.removeSurveyPaused(surveyDetail.id));
+              },
         heroTag: Const.submitIconTag,
       ));
     return list;

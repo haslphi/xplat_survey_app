@@ -29,13 +29,13 @@ class SurveyOverviewDescription extends StatelessWidget {
                 ),
                 const Padding(padding: EdgeInsets.symmetric(vertical: 2.0),),
                 Text(
-                  survey.desc,
+                  survey.description,
 //                  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam volu',
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.body1.fontSize,
+                    fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
                     color: Colors.white70,
                   ),
                 ),
@@ -50,7 +50,7 @@ class SurveyOverviewDescription extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: TextStyle(
-                fontSize: Theme.of(context).textTheme.body1.fontSize,
+                fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
                 color: Colors.white,
               ),
             ),

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xplatsurveydemo/model/surveyPaused.dart';
 import 'package:xplatsurveydemo/service/const.dart' as Const;
@@ -69,7 +69,7 @@ class Persistence {
     return prefs?.clear() ?? Future.value(false);
   }
 
-  Future<String> loadFile(String fileName, BuildContext context) async {
-    return await DefaultAssetBundle.of(context).loadString(fileName);
+  static Future<String> loadFile(String fileName) async {
+    return await rootBundle.loadString(fileName);
   }
 }

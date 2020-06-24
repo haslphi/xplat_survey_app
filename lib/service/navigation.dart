@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xplatsurveydemo/model/survey.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/screen/addsurvey/addsurveyscreen.dart';
 import 'package:xplatsurveydemo/screen/resumesurvey/resumesurveylist.dart';
@@ -26,10 +27,10 @@ void openAppBarPage(BuildContext context, String surveyJson) {
   ));
 }
 
-void openSurveyDetailsPage(BuildContext context, int id, String surveyTitle, Color backgroundColor) {
+void openSurveyDetailsPage(BuildContext context, Survey survey, Color backgroundColor) {
   Navigator.push(context, MaterialPageRoute(
     builder: (BuildContext context) {
-      return SurveyDetailScreen(surveyId: id, surveyTitle: surveyTitle, backgroundColor: backgroundColor,);
+      return SurveyDetailScreen(survey: survey, backgroundColor: backgroundColor,);
     },
   ));
 }

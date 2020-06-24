@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:xplatsurveydemo/model/survey.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
 import 'package:xplatsurveydemo/model/surveyPaused.dart';
 import 'package:xplatsurveydemo/restClient/surveyRestClient.dart' as REST;
@@ -16,11 +15,10 @@ final SnackBar snackBar =
 
 /// This is the stateful widget that the main application instantiates.
 class SurveyDetailScreen extends StatefulWidget {
-  SurveyDetailScreen({Key key, this.surveyId, this.surveyTitle, this.backgroundColor = Colors.blue})
+  SurveyDetailScreen({Key key, this.survey, this.backgroundColor = Colors.blue})
       : super(key: key);
 
-  final int surveyId;
-  final String surveyTitle;
+  final Survey survey;
   final Color backgroundColor;
 
   @override
@@ -35,9 +33,11 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
   @override
   void initState() {
     super.initState();
-    futureSurvey = REST.fetchSurveyById(widget.surveyId);
-    surveyPaused = surveyPaused ?? Persistence.getSurveyPaused(widget.surveyId);
+    futureSurvey = REST.fetchSurveyDetail(widget.survey);
+    surveyPaused = surveyPaused ?? Persistence.getSurveyPaused(widget.survey.id);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +45,12 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
       appBar: AppBar(
         title: Row(
           children: <Widget>[
-            SurveyOverviewIcon(id: widget.surveyId, size: SurveyOverviewIconSize.SMALL, backgroundColor: widget.backgroundColor,),
+            SurveyOverviewIcon(id: widget.survey.id, size: SurveyOverviewIconSize.SMALL, backgroundColor: widget.backgroundColor, indicateLocal: widget.survey.isLocal,),
             const Padding(padding: EdgeInsets.symmetric(horizontal: 4.0),),
             Expanded(
                 flex: 1,
                 child: Text(
-                  widget.surveyTitle,
+                  widget.survey.title,
                   softWrap: false,
                   overflow: TextOverflow.fade,)
             ),
@@ -86,7 +86,7 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                   children: <Widget>[
                     OutlineButton(
                       // transform form to json string and backwards to make a 'clone'
-                      onPressed: surveyPaused != null ? () => Nav.startSurvey(context, SurveyPaused.fromJson(jsonDecode(jsonEncode(surveyPaused))).surveyDetail, pageIndex: surveyPaused.pausedAtPageIndex.toInt()) : null,
+                      onPressed: surveyPaused != null ? () => Nav.startSurvey(context, SurveyPaused.clone(surveyPaused).surveyDetail, pageIndex: surveyPaused.pausedAtPageIndex.toInt()) : null,
                       textColor: Theme.of(context).primaryColor,
                       shape: RoundedRectangleBorder(side: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: Text('Resume'),
@@ -96,7 +96,8 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                       icon: Icon(Icons.play_arrow),
                       label: Text('Start'),
                       backgroundColor: widget.backgroundColor,
-                      onPressed: () => Nav.startSurvey(context, SurveyDetail.fromJson(jsonDecode(jsonEncode(surveyDetail))), pageIndex: 0),
+                      // transform form to json string and backwards to make a 'clone'
+                      onPressed: () => Nav.startSurvey(context, SurveyDetail.clone(surveyDetail), pageIndex: 0),
                       heroTag: Const.detailsStartSurveyIconTag,
                     ),
                   ],

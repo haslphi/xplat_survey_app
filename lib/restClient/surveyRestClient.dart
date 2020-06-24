@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:xplatsurveydemo/model/survey.dart';
 import 'package:xplatsurveydemo/model/surveyDetails.dart';
+import 'package:xplatsurveydemo/service/persistence.dart';
 
 class SurveyApiConstants {
   static const baseUrl = 'http://www.birnbaua.at/jku/questionnaires';
@@ -16,8 +17,14 @@ Future<List<Survey>> fetchSurveys() async {
     // If the server did return a 200 OK response,
     // then parse the JSON.
     var surveyListJson = jsonDecode(response.body) as List;
-    List<Survey> survey = surveyListJson.map((surveyJson) => Survey.fromJson(surveyJson)).toList();
-    return survey;
+    List<Survey> surveyList = surveyListJson.map((surveyJson) => Survey.fromJson(surveyJson)).toList();
+
+    //load and add local survey data
+    //Persistence.loadFile('assets/data.json').then((body) => (jsonDecode(body) as List).map((json) => Survey.fromJson(json)).forEach((survey) {surveyList.add(survey);}));
+    String fileBody = await Persistence.loadFile('assets/localSurveys.json').timeout(Duration(seconds: 5));
+    (jsonDecode(fileBody) as List).map((json) => Survey.fromJson(json)).forEach((survey) {survey.isLocal = true; surveyList.add(survey);});
+
+    return surveyList;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
@@ -25,20 +32,27 @@ Future<List<Survey>> fetchSurveys() async {
   }
 }
 
-Future<SurveyDetail> fetchSurveyById(int surveyId) async {
+Future<SurveyDetail> fetchSurveyDetail(Survey survey) async {
   final baseUrl = SurveyApiConstants.baseUrl;
-  final response = await http.get('$baseUrl/$surveyId').timeout(SurveyApiConstants.timeoutDuration);
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    var surveyJson = jsonDecode(response.body);
-    SurveyDetail survey = SurveyDetail.fromJson(surveyJson);
-    return survey;
+  if (!survey.isLocal) {
+    final response = await http.get('$baseUrl/${survey.id}').timeout(SurveyApiConstants.timeoutDuration);
+    
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      var surveyJson = jsonDecode(response.body);
+      SurveyDetail survey = SurveyDetail.fromJson(surveyJson);
+      return survey;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load survey');
+    }
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load surveys');
+    String fileBody = await Persistence.loadFile('assets/localSurveyDetails.json').timeout(Duration(seconds: 5));
+    SurveyDetail sd = (jsonDecode(fileBody) as List).map((json) => SurveyDetail.fromJson(json)).firstWhere((sd) => sd.id == survey.id);
+    sd.isLocal = true;
+    return sd;
   }
 }
 

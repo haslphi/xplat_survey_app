@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class HomeTile extends StatelessWidget {
-  HomeTile({this.icon, this.iconTag, this.onPressed, this.tileTitle});
+  HomeTile({this.icon, this.iconTag, this.onPressed, this.tileTitle, this.customColor});
 
   final IconData icon;
   final String iconTag;
   final double btnSize = 72.0;
   final Function onPressed;
   final String tileTitle;
+  final Color customColor;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class HomeTile extends StatelessWidget {
                       child: Icon(
                         icon,
                         size: btnSize,
-                        color: Theme.of(context).primaryColor,
+                        color: customColor ?? Theme.of(context).primaryColor ,
                       ),
                     ),
                   ),
@@ -54,7 +55,7 @@ class HomeTile extends StatelessWidget {
                     child: Text(
                       tileTitle,
                       style: TextStyle(
-                        color: Theme.of(context).primaryColor,
+                        color: customColor ?? Theme.of(context).primaryColor,
                         fontFamily: Theme.of(context).textTheme.title.fontFamily,
                         fontSize: Theme.of(context).textTheme.title.fontSize,
                       ),

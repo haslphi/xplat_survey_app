@@ -1,0 +1,173 @@
+[
+  {
+    "id":813,
+    "title":"MCU",
+    "desc":"Fragebogen rund um das Marvel Cinematic Universe.",
+    "questions":[
+      {
+        "id":910,
+        "type":"NUMBER",
+        "question":"Wie alt bist du?",
+        "answers":[
+          {
+            "id":911,
+            "answer":"Dein alter",
+            "value":"",
+            "min":"0",
+            "max":"99"
+          }
+        ]
+      },
+      {
+        "id":920,
+        "type":"SINGLE_CHOICE",
+        "question":"Wo lebst du",
+        "answers":[
+          {
+            "id":921,
+            "answer":"Österreich",
+            "value":"false",
+            "min":"",
+            "max":""
+          },
+          {
+            "id":922,
+            "answer":"Deutschland",
+            "value":"false",
+            "min":"",
+            "max":""
+          },
+          {
+            "id":923,
+            "answer":"Schweiz",
+            "value":"false",
+            "min":"",
+            "max":""
+          }
+        ]
+      },
+      {
+        "id":930,
+        "type":"SINGLE_CHOICE",
+        "question":"Welcher ist der beste Iron Man Film?",
+        "answers":[
+          {
+            "id":931,
+            "answer":"Iron Man 1",
+            "value":"false",
+            "min":"",
+            "max":""
+          },
+          {
+            "id":932,
+            "answer":"Iron Man 2",
+            "value":"false",
+            "min":"",
+            "max":""
+          },
+          {
+            "id":933,
+            "answer":"Iron Man 3",
+            "value":"false",
+            "min":"",
+            "max":""
+          }
+        ]
+      },
+      {
+        "id":940,
+        "type":"YES_NO",
+        "question":"Freust du dich auf die kommende Filme nach Pase 3?",
+        "answers":[
+          {
+            "id":941,
+            "answer":"Ja",
+            "value":"false",
+            "min":"",
+            "max":""
+          },
+          {
+            "id":942,
+            "answer":"Nein",
+            "value":"false",
+            "min":"",
+            "max":""
+          }
+        ]
+      },
+      {
+        "id":950,
+        "type":"RATING",
+        "question":"Wie gespannt bist du auf folgende kommende Filme?\n1=wenig; 5=sehr",
+        "answers":[
+          {
+            "id":951,
+            "answer":"Guardians 3",
+            "value":"0",
+            "min":"0",
+            "max":"5"
+          },
+          {
+            "id":952,
+            "answer":"Black Widow",
+            "value":"0",
+            "min":"0",
+            "max":"5"
+          },
+          {
+            "id":953,
+            "answer":"Doctor Strange 2",
+            "value":"0",
+            "min":"0",
+            "max":"5"
+          }
+        ]
+      },
+      {
+        "id":960,
+        "type":"MULTIPLE_CHOICE",
+        "question":"Welche der Filme planst du im Kino anzusehen?",
+        "answers":[
+          {
+            "id":961,
+            "answer":"Guardians 3",
+            "value":"false",
+            "min":"",
+            "max":""
+          },
+          {
+            "id":962,
+            "answer":"Black Widow",
+            "value":"false",
+            "min":"",
+            "max":""
+          },
+          {
+            "id":963,
+            "answer":"Doctor Strange 2",
+            "value":"false",
+            "min":"",
+            "max":""
+          }
+        ]
+      },
+      {
+        "id":960,
+        "type":"OPEN",
+        "question":"Was würdest du gerne als Serienversion sehen?",
+        "answers":[
+          {
+            "id":961,
+            "answer":"Antwort",
+            "value":"",
+            "min":"",
+            "max":""
+          }
+        ]
+      }
+    ],
+    "answered":[
+
+    ]
+  }
+]
