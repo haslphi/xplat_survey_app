@@ -34,10 +34,9 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
   void initState() {
     super.initState();
     futureSurvey = REST.fetchSurveyDetail(widget.survey);
-    surveyPaused = surveyPaused ?? Persistence.getSurveyPaused(widget.survey.id);
+    surveyPaused =
+        surveyPaused ?? Persistence.getSurveyPaused(widget.survey.id);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -45,36 +44,45 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
       appBar: AppBar(
         title: Row(
           children: <Widget>[
-            SurveyOverviewIcon(id: widget.survey.id, size: SurveyOverviewIconSize.SMALL, backgroundColor: widget.backgroundColor, indicateLocal: widget.survey.isLocal,),
-            const Padding(padding: EdgeInsets.symmetric(horizontal: 4.0),),
+            SurveyOverviewIcon(
+              id: widget.survey.id,
+              size: SurveyOverviewIconSize.SMALL,
+              backgroundColor: widget.backgroundColor,
+              indicateLocal: widget.survey.isLocal,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.0),
+            ),
             Expanded(
                 flex: 1,
                 child: Text(
                   widget.survey.title,
                   softWrap: false,
-                  overflow: TextOverflow.fade,)
-            ),
+                  overflow: TextOverflow.fade,
+                )),
           ],
         ),
       ),
       body: Column(
         children: <Widget>[
           Container(
-                  child: FutureBuilder(
-                    future: futureSurvey,
-                    builder: (context, surveySnap) {
-                      if (surveySnap.hasData) {
-                        surveyDetail = surveySnap.data;
-                        Persistence.addSurveySeen(surveyDetail.id);
-                        return SurveyDetailDescription(surveyDetail: surveyDetail, backgroundColor: widget.backgroundColor,);
-                      } else if (surveySnap.hasError) {
-                        return Text("${surveySnap.error}");
-                      }
-                      // By default, show a loading spinner.
-                      return CircularProgressIndicator();
-                    },
-                  )
-              ),
+              child: FutureBuilder(
+            future: futureSurvey,
+            builder: (context, surveySnap) {
+              if (surveySnap.hasData) {
+                surveyDetail = surveySnap.data;
+                Persistence.addSurveySeen(surveyDetail.id);
+                return SurveyDetailDescription(
+                  surveyDetail: surveyDetail,
+                  backgroundColor: widget.backgroundColor,
+                );
+              } else if (surveySnap.hasError) {
+                return Text("${surveySnap.error}");
+              }
+              // By default, show a loading spinner.
+              return CircularProgressIndicator();
+            },
+          )),
           Expanded(
             child: Align(
               // aligns row with buttons to bottom of expanded widget
@@ -86,18 +94,28 @@ class _SurveyDetailScreenState extends State<SurveyDetailScreen> {
                   children: <Widget>[
                     OutlineButton(
                       // transform form to json string and backwards to make a 'clone'
-                      onPressed: surveyPaused != null ? () => Nav.startSurvey(context, SurveyPaused.clone(surveyPaused).surveyDetail, pageIndex: surveyPaused.pausedAtPageIndex.toInt()) : null,
+                      onPressed: surveyPaused != null
+                          ? () => Nav.startSurvey(context,
+                              SurveyPaused.clone(surveyPaused).surveyDetail,
+                              pageIndex: surveyPaused.pausedAtPageIndex.toInt())
+                          : null,
                       textColor: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(side: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(20))),
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide.none,
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
                       child: Text('Resume'),
                     ),
-                    SizedBox(width: 16,),
+                    SizedBox(
+                      width: 16,
+                    ),
                     FloatingActionButton.extended(
                       icon: Icon(Icons.play_arrow),
                       label: Text('Start'),
                       backgroundColor: widget.backgroundColor,
                       // transform form to json string and backwards to make a 'clone'
-                      onPressed: () => Nav.startSurvey(context, SurveyDetail.clone(surveyDetail), pageIndex: 0),
+                      onPressed: () => Nav.startSurvey(
+                          context, SurveyDetail.clone(surveyDetail),
+                          pageIndex: 0),
                       heroTag: Const.detailsStartSurveyIconTag,
                     ),
                   ],

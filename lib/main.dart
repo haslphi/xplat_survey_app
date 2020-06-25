@@ -13,6 +13,18 @@ class MyApp extends StatelessWidget {
     // init Persistence Singleton
     Persistence.init();
 
+//    return MultiProvider(
+//      providers: [
+//        Provider(
+//          create: (context) => SelectedSurveyModel,
+//        )
+//      ],
+//      child: MaterialApp(
+//        title: _title,
+//        home: HomeScreen(),
+//      ),
+//    );
+
     return MaterialApp(
       title: _title,
       home: HomeScreen(),
